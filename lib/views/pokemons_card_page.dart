@@ -1,14 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:pokemon_app/controllers/providers/provider_pokemons.dart';
-import 'package:pokemon_app/controllers/services/services_cards_pokemon.dart';
+import 'package:pokemon_app/controllers/services/services_pokemon.dart';
 import 'package:pokemon_app/models/model_pokemons.dart';
-import 'package:provider/provider.dart';
 
 class PokemonsCardPage extends StatefulWidget {
-  PokemonsCardPage({super.key});
+  final int index;
+  const PokemonsCardPage({super.key, required this.index});
 
   @override
   State<PokemonsCardPage> createState() => _PokemonsCardPageState();
@@ -18,18 +15,15 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
   final CardSwiperController controller = CardSwiperController();
 
   late Future<ModelPokemons> typePokemons;
-  
-
 
   @override
   void initState() {
     super.initState();
-    typePokemons = ServiceGetPokemons().getPokemons();
+    typePokemons = ServiceGetPokemons().getPokemons(widget.index +1);
   }
 
   @override
   Widget build(BuildContext context) {
-    //ProviderPokemonsId pokemonsId = context.watch<ProviderPokemonsId>();
     return Scaffold(
       body: FutureBuilder<ModelPokemons>(
         future: typePokemons,
@@ -40,12 +34,12 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
             return Text('Error: ${snapshot.error}');
           } else {
             return ListView.builder(
-                itemCount: snapshot.data?.pokemon.length,
+                itemCount: snapshot.data!.pokemon?.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text("${snapshot.data?.pokemon[index].pokemon.name}"),
-                      subtitle: Text("${snapshot.data?.moves[index].name}"),
+                      title:
+                          Text("${snapshot.data!.pokemon![index].pokemon?.name}"),
                     ),
                   );
                 });

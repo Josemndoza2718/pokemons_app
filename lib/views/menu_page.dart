@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokemon_app/controllers/providers/provider_pokemons.dart';
-import 'package:pokemon_app/controllers/services/services_cards_pokemon.dart';
+import 'package:pokemon_app/controllers/services/services_pokemon.dart';
 import 'package:pokemon_app/models/model_buttons_pokemons.dart';
-import 'package:provider/provider.dart';
 
 class MenuPage extends StatefulWidget {
-  MenuPage({super.key});
+  const MenuPage({super.key});
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -16,6 +14,7 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   late Future<ModelButtonsPokemons> buttonsTypePokemons;
+
    
   @override
   void initState() {
@@ -25,7 +24,6 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    //ProviderPokemonsId pokemonsId = context.watch<ProviderPokemonsId>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pokemons"),
@@ -53,10 +51,9 @@ class _MenuPageState extends State<MenuPage> {
                     trailing: IconButton(
                       icon: const Icon(Icons.chevron_right),
                       onPressed: () async {
-                        var dataTypePokemons =
-                            await ServiceGetPokemons().getPokemons();
+                        var dataTypePokemons = await ServiceGetPokemons().getPokemons(index + 1);
                         setState(() {});
-                        context.push('/cardPage');
+                        context.push('/cardPage/$index');
                         print("dataTypePokemons: $dataTypePokemons");
                       },
                     ),

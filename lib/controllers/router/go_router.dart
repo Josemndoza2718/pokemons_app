@@ -9,13 +9,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return MenuPage();
+        return const MenuPage();
       },
       routes: <RouteBase>[
         GoRoute(
-          path: 'cardPage',
+          path: 'cardPage/:index',
           builder: (BuildContext context, GoRouterState state) {
-            return PokemonsCardPage();
+            final index = int.parse(state.pathParameters['index']!);
+            return PokemonsCardPage(index: index,);
           },
         ),
       ],

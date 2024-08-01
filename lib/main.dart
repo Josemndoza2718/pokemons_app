@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_app/router/go_router.dart';
+import 'package:pokemon_app/controllers/router/go_router.dart';
 
 void main() => runApp(const MyApp());
 

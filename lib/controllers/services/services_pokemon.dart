@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:pokemon_app/models/model_buttons_pokemons.dart';
 import 'package:pokemon_app/models/model_pokemons.dart';
 
-String generalApiUrl = 'https://pokeapi.co/api/v2/type';
+String generalApiUrl = 'https://pokeapi.co/api/v2';
 
 
 //GET TYPE POKEMONS
 class ServicesGetTypePokemons {
   Future<ModelButtonsPokemons> getButtonsTypePokemons() async {
     try {
-      var buttonServicesApiUrl = Uri.parse(generalApiUrl);
+      var buttonServicesApiUrl = Uri.parse("$generalApiUrl/type");
       var response = await http.get(buttonServicesApiUrl);
 
       if (response.statusCode == 200) {
@@ -34,32 +34,10 @@ class ServicesGetTypePokemons {
 }
 
 //GET POKEMONS
-// class ServiceGetPokemons {
-//   Future<List<dynamic>> getPokemons() async {
-
-//       var cardServicesApiUrl = Uri.parse('$generalApiUrl/$pokemonsListId');
-//       var response = await http.get(cardServicesApiUrl);
-
-//       if (response.statusCode == 200) {
-//       log("${response.statusCode}");
-
-//         var pokemonsData = jsonDecode(response.body);
-
-//         List<dynamic> pokemonsList = pokemonsData['pokemon'];
-//         List<dynamic> pokemonsListData = pokemonsList.map((json)=> json['pokemon']['name']).toList();
-
-//         return pokemonsListData;
-//       } else {
-//         throw Exception('Failed to load Pokemons');
-//       }
-
-//   }
-// }
-
 class ServiceGetPokemons {
-  Future<ModelPokemons> getPokemons() async {
+  Future<ModelPokemons> getPokemons(int id) async {
    
-      var cardServicesApiUrl = Uri.parse('$generalApiUrl/1');
+      var cardServicesApiUrl = Uri.parse('$generalApiUrl/type/$id');
       var response = await http.get(cardServicesApiUrl);
 
       if (response.statusCode == 200) {
