@@ -1,17 +1,17 @@
-class ModelButtonsPokemons {
+class ModelTypePokemons {
     int count;
     String next;
     dynamic previous;
     List<Result> results;
 
-    ModelButtonsPokemons({
+    ModelTypePokemons({
         required this.count,
         required this.next,
         required this.previous,
         required this.results,
     });
 
-    factory ModelButtonsPokemons.fromJson(Map<String, dynamic> json) => ModelButtonsPokemons(
+    factory ModelTypePokemons.fromJson(Map<String, dynamic> json) => ModelTypePokemons(
         count: json["count"],
         next: json["next"],
         previous: json["previous"],

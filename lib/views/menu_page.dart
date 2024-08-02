@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokemon_app/controllers/services/services_pokemon.dart';
-import 'package:pokemon_app/models/model_buttons_pokemons.dart';
+import 'package:pokemon_app/controllers/services/api/api_get_pokemons.dart';
+import 'package:pokemon_app/models/model_type_pokemons.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -13,13 +13,13 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  late Future<ModelButtonsPokemons> buttonsTypePokemons;
+  late Future<ModelTypePokemons> buttonsTypePokemons;
 
    
   @override
   void initState() {
     super.initState();
-    buttonsTypePokemons = ServicesGetTypePokemons().getButtonsTypePokemons();
+    buttonsTypePokemons = ApiGetTypePokemons().getButtonsTypePokemons();
   }
 
   @override
@@ -28,7 +28,7 @@ class _MenuPageState extends State<MenuPage> {
       appBar: AppBar(
         title: const Text("Pokemons"),
       ),
-      body: FutureBuilder<ModelButtonsPokemons>(
+      body: FutureBuilder<ModelTypePokemons>(
         future: buttonsTypePokemons,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -51,10 +51,12 @@ class _MenuPageState extends State<MenuPage> {
                     trailing: IconButton(
                       icon: const Icon(Icons.chevron_right),
                       onPressed: () async {
-                        var dataTypePokemons = await ServiceGetPokemons().getPokemons(index + 1);
+                        //var dataTypePokemons = await ApiGetPokemons().getPokemons(index + 1);
+                        var dataDetailsPokemons = await ApiGetDetailsPokemons().getDetailsPokemons(index + 1);
                         setState(() {});
                         context.push('/cardPage/$index');
-                        print("dataTypePokemons: $dataTypePokemons");
+                        //print("dataTypePokemons: $dataTypePokemons");
+                        print("dataTypePokemons: $dataDetailsPokemons");
                       },
                     ),
                   ),
