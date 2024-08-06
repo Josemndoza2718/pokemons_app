@@ -51,12 +51,11 @@ class _MenuPageState extends State<MenuPage> {
                     trailing: IconButton(
                       icon: const Icon(Icons.chevron_right),
                       onPressed: () async {
-                        //var dataTypePokemons = await ApiGetPokemons().getPokemons(index + 1);
-                        var dataDetailsPokemons = await ApiGetDetailsPokemons().getDetailsPokemons(index + 1);
+                        var dataTypePokemons = await ApiGetPokemons().getPokemons(index + 1);
                         setState(() {});
                         context.push('/cardPage/$index');
-                        //print("dataTypePokemons: $dataTypePokemons");
-                        print("dataTypePokemons: $dataDetailsPokemons");
+                        print("dataTypePokemons: $dataTypePokemons");
+                        
                       },
                     ),
                   ),

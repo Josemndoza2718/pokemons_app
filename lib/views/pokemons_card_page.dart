@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pokemon_app/controllers/services/api/api_get_pokemons.dart';
-//import 'package:pokemon_app/models/model_by_type_pokemons.dart';
+import 'package:pokemon_app/models/model_by_type_pokemons.dart';
 import 'package:pokemon_app/models/model_details_pokemons.dart';
 
 class PokemonsCardPage extends StatefulWidget {
@@ -15,52 +15,49 @@ class PokemonsCardPage extends StatefulWidget {
 class _PokemonsCardPageState extends State<PokemonsCardPage> {
   final CardSwiperController controller = CardSwiperController();
 
-  //late Future<ModelByTypePokemons> typePokemons;
+  late Future<ModelByTypePokemons> typePokemons;
   late Future<ModelDetailsPokemons> detailsPokemons;
 
   @override
   void initState() {
     super.initState();
-    detailsPokemons = ApiGetDetailsPokemons().getDetailsPokemons(widget.index + 1);
+    typePokemons = ApiGetPokemons().getPokemons(widget.index + 1);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder<ModelDetailsPokemons>(
-          future: detailsPokemons,
+        child: FutureBuilder<ModelByTypePokemons>(
+          future: typePokemons,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return Column(
-                children: [
-                  Card(
-                    child: ListTile(
-                      leading: Image.network(snapshot
-                              .data!.sprites!.other!.showdown!.frontDefault ??
-                          'https://media.istockphoto.com/id/1055079680/es/vector/c%C3%A1mara-lineal-negro-como-ninguna-imagen-disponible.jpg?s=612x612&w=0&k=20&c=mYv5-3x668712KVHFnzZX2Tvb_DEQ2Ka7dDwOkTp9Q8='),
-                      title: Text(snapshot.data!.name ?? 'no name'),
-                      subtitle: Container(
-                        color: Colors.transparent,
-                    height: 20,
-                    //width: 30,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.types?.length,
-                        itemBuilder: (context, index) {
-                          return Text(
-                              "${snapshot.data!.types![index].type?.name} ", style: const TextStyle(fontSize: 12),);
-                        }),
-                  ),
-                    ),
-                  ),
-                  
-                ],
-              );
+              return ListView.builder(
+                  itemCount: snapshot.data?.pokemon?.length,
+                  itemBuilder: (context, index) {
+                    detailsPokemons = ApiGetDetailsPokemons().getDetailsPokemons(snapshot.data?.pokemon?[index].pokemon?.url ?? '');
+                    return Card(
+                      child: ListTile(
+                        leading: FutureBuilder<ModelDetailsPokemons>(
+                            future: detailsPokemons,
+                            builder: (context, pokeimg) {
+                              if (pokeimg.connectionState == ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (pokeimg.hasError) {
+                                return Text('Error: ${pokeimg.error}');
+                              } else {
+                                return Image.network(pokeimg.data!.sprites!.other!.officialArtwork!.frontDefault ?? 'https://media.istockphoto.com/id/1055079680/es/vector/c%C3%A1mara-lineal-negro-como-ninguna-imagen-disponible.jpg?s=612x612&w=0&k=20&c=mYv5-3x668712KVHFnzZX2Tvb_DEQ2Ka7dDwOkTp9Q8=');
+                              }
+                            }),
+                        title: Text(
+                            "${snapshot.data!.pokemon![index].pokemon?.name}"),
+                      ),
+                    );
+                  });
             }
           },
         ),
