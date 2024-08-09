@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokemon_app/controllers/services/api/api_get_pokemons.dart';
 import 'package:pokemon_app/models/model_by_type_pokemons.dart';
 import 'package:pokemon_app/models/model_details_pokemons.dart';
@@ -21,7 +23,7 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
   @override
   void initState() {
     super.initState();
-    typePokemons = ApiGetPokemons().getPokemons(widget.index + 1);
+    typePokemons = ApiGetPokemonsByType().getPokemonsByType(widget.index + 1);
   }
 
   @override
@@ -39,22 +41,81 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
               return ListView.builder(
                   itemCount: snapshot.data?.pokemon?.length,
                   itemBuilder: (context, index) {
-                    detailsPokemons = ApiGetDetailsPokemons().getDetailsPokemons(snapshot.data?.pokemon?[index].pokemon?.url ?? '');
-                    return Card(
-                      child: ListTile(
+                    detailsPokemons = ApiGetDetailsPokemons()
+                        .getDetailsPokemons(
+                            snapshot.data?.pokemon?[index].pokemon?.url ?? '');
+                    return Dismissible(
+                      key: Key(
+                          '${snapshot.data!.pokemon![index].pokemon!.name}'),
+                      background: Container(
+                        alignment: Alignment.centerLeft,
+                        color: Colors.green,
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text("Equip"),
+                        ),
+                      ),
+                      direction: DismissDirection.startToEnd,
+                      child: ExpansionTile(
                         leading: FutureBuilder<ModelDetailsPokemons>(
-                            future: detailsPokemons,
-                            builder: (context, pokeimg) {
-                              if (pokeimg.connectionState == ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              } else if (pokeimg.hasError) {
-                                return Text('Error: ${pokeimg.error}');
-                              } else {
-                                return Image.network(pokeimg.data!.sprites!.other!.officialArtwork!.frontDefault ?? 'https://media.istockphoto.com/id/1055079680/es/vector/c%C3%A1mara-lineal-negro-como-ninguna-imagen-disponible.jpg?s=612x612&w=0&k=20&c=mYv5-3x668712KVHFnzZX2Tvb_DEQ2Ka7dDwOkTp9Q8=');
-                              }
-                            }),
+                          future: detailsPokemons,
+                          builder: (context, pokeImg) {
+                            if (pokeImg.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (pokeImg.hasError) {
+                              return Text('Error: ${pokeImg.error}');
+                            } else {
+                              String? url = pokeImg.data!.sprites!.other!
+                                  .officialArtwork!.frontDefault;
+
+                              return url != null
+                                  ? CachedNetworkImage(
+                                      imageUrl: url,
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    )
+                                  : SvgPicture.asset(
+                                      'assets/image_not_found.svg');
+                            }
+                          },
+                        ),
                         title: Text(
                             "${snapshot.data!.pokemon![index].pokemon?.name}"),
+                        trailing: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xffece5f3),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            child: const Text(
+                              'view',
+                              style: TextStyle(
+                                  color: Colors.deepPurple,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        children: [
+                          FutureBuilder<ModelDetailsPokemons>(
+                            future: detailsPokemons,
+                            builder: (context, pokeImg) {
+                              if (pokeImg.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (pokeImg.hasError) {
+                                return Text('Error: ${pokeImg.error}');
+                              } else {
+                                return Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                  ),
+                                  child: Text("${pokeImg.data!.abilities}"),
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     );
                   });

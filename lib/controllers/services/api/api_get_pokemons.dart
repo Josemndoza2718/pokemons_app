@@ -40,8 +40,8 @@ class ApiGetTypePokemons {
 }
 
 //GET POKEMONS BY TYPES
-class ApiGetPokemons {
-  Future<ModelByTypePokemons> getPokemons(int id) async {
+class ApiGetPokemonsByType {
+  Future<ModelByTypePokemons> getPokemonsByType(int id) async {
 
       var cardServicesApiUrl = Uri.parse('$generalApiUrl/type/$id');
       var response = await http.get(cardServicesApiUrl);
@@ -60,6 +60,7 @@ class ApiGetPokemons {
   }
 }
 
+//GET DETAILS POKEMONS
 class ApiGetDetailsPokemons {
   Future<ModelDetailsPokemons> getDetailsPokemons(String url) async {
     try {

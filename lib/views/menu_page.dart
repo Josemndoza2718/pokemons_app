@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokemon_app/controllers/services/api/api_get_pokemons.dart';
+import 'package:pokemon_app/models/model_icon_by_type_pokemons.dart';
 import 'package:pokemon_app/models/model_type_pokemons.dart';
 
 class MenuPage extends StatefulWidget {
@@ -14,6 +16,8 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   late Future<ModelTypePokemons> buttonsTypePokemons;
+  
+  
 
    
   @override
@@ -47,11 +51,12 @@ class _MenuPageState extends State<MenuPage> {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
+                    leading: SvgPicture.asset(iconByTypePokemons[index].iconPokemons, width: 30, height: 30), //Image.asset(iconByTypePokemons[0].labelIconPokemons, width: 60, height: 60),
                     title: Text("${snapshot.data?.results[index].name}"),
                     trailing: IconButton(
                       icon: const Icon(Icons.chevron_right),
                       onPressed: () async {
-                        var dataTypePokemons = await ApiGetPokemons().getPokemons(index + 1);
+                        var dataTypePokemons = await ApiGetPokemonsByType().getPokemonsByType(index + 1);
                         setState(() {});
                         context.push('/cardPage/$index');
                         print("dataTypePokemons: $dataTypePokemons");
