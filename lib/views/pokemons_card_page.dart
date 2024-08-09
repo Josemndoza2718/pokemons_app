@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:pokemon_app/controllers/services/api/api_get_pokemons.dart';
 import 'package:pokemon_app/models/model_by_type_pokemons.dart';
 import 'package:pokemon_app/models/model_details_pokemons.dart';
+import 'package:pokemon_app/models/model_icon_by_type_pokemons.dart';
 
 class PokemonsCardPage extends StatefulWidget {
   final int index;
@@ -19,16 +23,24 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
 
   late Future<ModelByTypePokemons> typePokemons;
   late Future<ModelDetailsPokemons> detailsPokemons;
+  late ModelIconByTypePokemons labelByTypePokemons;
 
   @override
   void initState() {
     super.initState();
     typePokemons = ApiGetPokemonsByType().getPokemonsByType(widget.index + 1);
+
+    // Obtener el icono y etiqueta del tipo de Pokémon correspondiente
+    labelByTypePokemons = iconByTypePokemons[widget
+        .index]; //labelByTypePokemons = iconByTypePokemons[widget.index] ?? iconByTypePokemons.last;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Image.asset(labelByTypePokemons.labelIconPokemons),
+      ),
       body: SafeArea(
         child: FutureBuilder<ModelByTypePokemons>(
           future: typePokemons,
@@ -71,12 +83,12 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
 
                               return url != null
                                   ? CachedNetworkImage(
-                                      imageUrl: url,
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                    )
+                                    imageUrl: url,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  )
                                   : SvgPicture.asset(
                                       'assets/image_not_found.svg');
                             }
@@ -102,15 +114,24 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
                             builder: (context, pokeImg) {
                               if (pokeImg.connectionState ==
                                   ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
+                                return const Text('Cargando...');
                               } else if (pokeImg.hasError) {
                                 return Text('Error: ${pokeImg.error}');
                               } else {
-                                return Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.blue,
-                                  ),
-                                  child: Text("${pokeImg.data!.abilities}"),
+                                return Column(
+                                  children: [
+                                    Container(
+                                      height: 200,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff343434),
+                                        //color: Color(0xffebeceb),
+                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+                                      ),
+                                      child: Text("${pokeImg.data!.name}"),
+                                      ),
+                                    
+                                  ],
                                 );
                               }
                             },
@@ -126,121 +147,3 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
     );
   }
 }
-
-// class PokemonsListCardPage extends StatefulWidget {
-//   const PokemonsListCardPage({super.key, required this.modelPokemons});
-
-//   final ModelPokemons modelPokemons;
-
-//   @override
-//   State<PokemonsListCardPage> createState() => _PokemonsListCardPageState();
-// }
-
-// class _PokemonsListCardPageState extends State<PokemonsListCardPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Card(
-//           color: Colors.amber,
-//           borderOnForeground: true,
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Container(
-//                 width: 300,
-//                 height: 530,
-//                 margin: const EdgeInsets.all(10),
-//                 decoration: const BoxDecoration(color: Colors.red),
-//                 child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     children: [
-//                       const SizedBox(height: 10),
-//                       Padding(
-//                         padding: EdgeInsets.all(10.0),
-//                         child: Row(
-//                           children: [
-//                             Text("${widget.modelPokemons.types}"),
-//                           ],
-//                         ),
-//                       ),
-//                       Container(
-//                           width: 250,
-//                           height: 180,
-//                           decoration: BoxDecoration(
-//                               color: Colors.blue,
-//                               border: Border.all(
-//                                   width: 6, color: const Color(0xffc2a625))),
-//                           child: Image.network(
-//                             "${widget.modelPokemons.sprites}",
-//                             fit: BoxFit.cover,
-//                           )),
-//                       Container(
-//                           padding: const EdgeInsets.symmetric(horizontal: 15),
-//                           child: const Text(
-//                             '''Nisi consectetur irure et culpa excepteur in consectetur occaecat velit minim dolore. Quis ea est consectetur ad deserunt nostrud et. Qui ea qui velit ullamco esse. Eiusmod aute deserunt enim aliquip id incididunt. ''',
-//                             textAlign: TextAlign.justify,
-//                           )),
-//                       const Padding(
-//                         padding: EdgeInsets.symmetric(horizontal: 8.0),
-//                         child: Divider(color: Colors.black),
-//                       ),
-//                       Container(
-//                           padding: const EdgeInsets.symmetric(horizontal: 15),
-//                           child: const Text(
-//                             '''Nisi consectetur irure et culpa excepteur in consectetur occaecat velit minim dolore. Quis ea est consectetur ad deserunt nostrud et. ''',
-//                             textAlign: TextAlign.justify,
-//                           )),
-//                       const Padding(
-//                         padding: EdgeInsets.symmetric(horizontal: 8.0),
-//                         child: Divider(color: Colors.black),
-//                       ),
-//                       Container(
-//                           padding: const EdgeInsets.symmetric(horizontal: 15),
-//                           child: const Text(
-//                             '''Nisi consectetur irure et culpa excepteur in consectetur occaecat velit minim dolore. ''',
-//                             textAlign: TextAlign.justify,
-//                           )),
-//                     ]),
-//               )
-//             ],
-//           ),
-//         ),
-//         //const SizedBox(height: 20),
-//         // Row(
-//         //   mainAxisAlignment: MainAxisAlignment.center,
-//         //   children: [
-//         //     FilledButton(
-//         //         style: const ButtonStyle(
-//         //           fixedSize: WidgetStatePropertyAll(Size(100, 70)),
-//         //           shape: WidgetStatePropertyAll(
-//         //               CircleBorder(eccentricity: 0.1)),
-//         //           backgroundColor: WidgetStatePropertyAll(
-//         //               Color.fromARGB(255, 76, 175, 80)),
-//         //         ),
-//         //         onPressed: () {},
-//         //         child: const Text('Equip')),
-//         //     FilledButton(
-//         //         style: const ButtonStyle(
-//         //           fixedSize: WidgetStatePropertyAll(Size(100, 70)),
-//         //           shape: WidgetStatePropertyAll(
-//         //               CircleBorder(eccentricity: 0.1)),
-//         //           backgroundColor: WidgetStatePropertyAll(Colors.amber),
-//         //         ),
-//         //         onPressed: () {},
-//         //         child: const Text('Trainig')),
-//         //     FilledButton(
-//         //         style: const ButtonStyle(
-//         //           fixedSize: WidgetStatePropertyAll(Size(100, 70)),
-//         //           shape: WidgetStatePropertyAll(
-//         //               CircleBorder(eccentricity: 0.1)),
-//         //           backgroundColor: WidgetStatePropertyAll(Colors.red),
-//         //         ),
-//         //         onPressed: () {},
-//         //         child: const Text('Sleep')),
-//         //   ],
-//         // )
-//       ],
-//     );
-//   }
-// }

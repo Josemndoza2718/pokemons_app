@@ -18,6 +18,7 @@ class _MenuPageState extends State<MenuPage> {
   late Future<ModelTypePokemons> buttonsTypePokemons;
   
   
+  
 
    
   @override
@@ -51,7 +52,7 @@ class _MenuPageState extends State<MenuPage> {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    leading: SvgPicture.asset(iconByTypePokemons[index].iconPokemons, width: 30, height: 30), //Image.asset(iconByTypePokemons[0].labelIconPokemons, width: 60, height: 60),
+                    leading: SvgPicture.asset(iconByTypePokemons[index].iconPokemons, width: 30, height: 30), //leading: SvgPicture.asset(iconByTypePokemons[index].iconPokemons, width: 30, height: 30),
                     title: Text("${snapshot.data?.results[index].name}"),
                     trailing: IconButton(
                       icon: const Icon(Icons.chevron_right),
