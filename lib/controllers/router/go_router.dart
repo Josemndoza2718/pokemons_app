@@ -3,20 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokemon_app/views/menu_page.dart';
 import 'package:pokemon_app/views/pokemons_card_page.dart';
+import 'package:pokemon_app/views/start_page.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const MenuPage();
+        return StartPage();
       },
       routes: <RouteBase>[
+        GoRoute(
+          path: 'menuPage',
+          builder: (BuildContext context, GoRouterState state) {
+            return const MenuPage();
+          },
+        ),
         GoRoute(
           path: 'cardPage/:index',
           builder: (BuildContext context, GoRouterState state) {
             final index = int.parse(state.pathParameters['index']!);
-            return PokemonsCardPage(index: index,);
+            return PokemonsCardPage(
+              index: index,
+            );
           },
         ),
       ],

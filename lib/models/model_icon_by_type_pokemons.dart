@@ -32,8 +32,8 @@ List<ModelIconByTypePokemons> generateIconByTypePokemons() {
   ];
 
   // Ruta base
-  const String iconPath = 'assets/icon_type_pokemons/Tipo_';
-  const String labelPath = 'assets/icon_labels_pokemons/80px-Tipo_';
+  const String iconPath = 'assets/svg/icon_type_pokemons/Tipo_';
+  const String labelPath = 'assets/png/icon_labels_pokemons/80px-Tipo_';
 
   List<ModelIconByTypePokemons> icons = types.map((type) {
     return ModelIconByTypePokemons(
@@ -45,12 +45,12 @@ List<ModelIconByTypePokemons> generateIconByTypePokemons() {
   // Agregar iconos "image_not_found" al final de la lista
   icons.addAll([
     const ModelIconByTypePokemons(
-      iconPokemons: 'assets/image_not_found.svg',
-      labelIconPokemons: 'assets/image_not_found.svg',
+      iconPokemons: 'assets/svg/image_not_found.svg',
+      labelIconPokemons: 'assets/svg/image_not_found.svg',
     ),
     const ModelIconByTypePokemons(
-      iconPokemons: 'assets/image_not_found.svg',
-      labelIconPokemons: 'assets/image_not_found.svg',
+      iconPokemons: 'assets/svg/image_not_found.svg',
+      labelIconPokemons: 'assets/svg/image_not_found.svg',
     ),
   ]);
 
