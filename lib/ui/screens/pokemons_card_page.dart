@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:pokemon_app/controllers/services/api/api_get_pokemons.dart';
-import 'package:pokemon_app/models/model_by_type_pokemons.dart';
-import 'package:pokemon_app/models/model_details_pokemons.dart';
-import 'package:pokemon_app/models/model_icon_by_type_pokemons.dart';
+import 'package:pokemon_app/infraestructure/driven_adapter/api/api_get_pokemons.dart';
+import 'package:pokemon_app/domain/models/model_by_type_pokemons.dart';
+import 'package:pokemon_app/domain/models/model_details_pokemons.dart';
+import 'package:pokemon_app/domain/models/model_icon_by_type_pokemons.dart';
 
 class PokemonsCardPage extends StatefulWidget {
   final int index;

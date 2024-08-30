@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pokemon_app/controllers/router/go_router.dart';
+import 'package:pokemon_app/config/router/go_router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

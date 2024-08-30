@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:pokemon_app/models/model_by_type_pokemons.dart';
-import 'package:pokemon_app/models/model_details_pokemons.dart';
-import 'package:pokemon_app/models/model_type_pokemons.dart';
+import 'package:pokemon_app/domain/models/model_by_type_pokemons.dart';
+import 'package:pokemon_app/domain/models/model_details_pokemons.dart';
+import 'package:pokemon_app/domain/models/model_type_pokemons.dart';
 
 String generalApiUrl = 'https://pokeapi.co/api/v2';
 

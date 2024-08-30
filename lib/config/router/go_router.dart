@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:pokemon_app/views/menu_page.dart';
-import 'package:pokemon_app/views/pokemons_card_page.dart';
-import 'package:pokemon_app/views/start_page.dart';
+import 'package:pokemon_app/ui/screens/menu_page.dart';
+import 'package:pokemon_app/ui/screens/pokemons_card_page.dart';
+import 'package:pokemon_app/ui/screens/start_page.dart';
+import 'package:pokemon_app/ui/widgets/bottom_bar.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -16,9 +17,15 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'menuPage',
           builder: (BuildContext context, GoRouterState state) {
-            return const MenuPage();
+            return const BottomBar();
           },
         ),
+        // GoRoute(
+        //   path: 'menuPage',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const MenuPage();
+        //   },
+        // ),
         GoRoute(
           path: 'cardPage/:index',
           builder: (BuildContext context, GoRouterState state) {
