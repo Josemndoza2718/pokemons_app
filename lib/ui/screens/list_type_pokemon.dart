@@ -1,24 +1,21 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:pokemon_app/infraestructure/driven_adapter/api/api_get_pokemons.dart';
 import 'package:pokemon_app/domain/models/model_by_type_pokemons.dart';
 import 'package:pokemon_app/domain/models/model_details_pokemons.dart';
 import 'package:pokemon_app/domain/models/model_icon_by_type_pokemons.dart';
 
-class PokemonsCardPage extends StatefulWidget {
+class ListTypePokemon extends StatefulWidget {
   final int index;
-  const PokemonsCardPage({super.key, required this.index});
+  const ListTypePokemon({super.key, required this.index});
 
   @override
-  State<PokemonsCardPage> createState() => _PokemonsCardPageState();
+  State<ListTypePokemon> createState() => _ListTypePokemonState();
 }
 
-class _PokemonsCardPageState extends State<PokemonsCardPage> {
+class _ListTypePokemonState extends State<ListTypePokemon> {
   final CardSwiperController controller = CardSwiperController();
 
   late Future<ModelByTypePokemons> typePokemons;
@@ -31,17 +28,13 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
     typePokemons = ApiGetPokemonsByType().getPokemonsByType(widget.index + 1);
 
     // Obtener el icono y etiqueta del tipo de Pokémon correspondiente
-    labelByTypePokemons = iconByTypePokemons[widget.index]; //labelByTypePokemons = iconByTypePokemons[widget.index] ?? iconByTypePokemons.last;
+    labelByTypePokemons = iconByTypePokemons[widget
+        .index]; //labelByTypePokemons = iconByTypePokemons[widget.index] ?? iconByTypePokemons.last;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(labelByTypePokemons.labelIconPokemons),
-      ),
-      body: SafeArea(
-        child: FutureBuilder<ModelByTypePokemons>(
+    return FutureBuilder<ModelByTypePokemons>(
           future: typePokemons,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -82,12 +75,12 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
 
                               return url != null
                                   ? CachedNetworkImage(
-                                    imageUrl: url,
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  )
+                                      imageUrl: url,
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    )
                                   : SvgPicture.asset(
                                       'assets/image_not_found.svg');
                             }
@@ -125,11 +118,11 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
                                       decoration: BoxDecoration(
                                         color: Color(0xff343434),
                                         //color: Color(0xffebeceb),
-                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+                                        borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(10)),
                                       ),
                                       child: Text("${pokeImg.data!.name}"),
-                                      ),
-                                    
+                                    ),
                                   ],
                                 );
                               }
@@ -141,8 +134,8 @@ class _PokemonsCardPageState extends State<PokemonsCardPage> {
                   });
             }
           },
-        ),
-      ),
-    );
+        );
+      
+    
   }
 }

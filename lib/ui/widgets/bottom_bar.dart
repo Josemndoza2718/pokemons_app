@@ -13,7 +13,7 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int currentPageIndex = 2;
+  int currentPageIndex = 3;
 
   final List<Map<String, dynamic>> barItems = const [
     {
@@ -80,9 +80,11 @@ class _BottomBarState extends State<BottomBar> {
               color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
         ),
       ),
-      body: IndexedStack(
-        index: currentPageIndex,
-        children: barItems.map((item) => item['screen'] as Widget).toList(),
+      body: SingleChildScrollView(
+        child: IndexedStack(
+          index: currentPageIndex,
+          children: barItems.map((item) => item['screen'] as Widget).toList(),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: barItems
