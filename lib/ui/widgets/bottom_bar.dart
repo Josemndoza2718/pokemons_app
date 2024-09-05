@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_app/ui/screens/berries_page.dart';
 import 'package:pokemon_app/ui/screens/items_page.dart';
 import 'package:pokemon_app/ui/screens/menu_page.dart';
-import 'package:pokemon_app/ui/screens/pokemons_page.dart';
+import 'package:pokemon_app/ui/screens/pokemons_screen/pokemons_page.dart';
 import 'package:pokemon_app/ui/screens/preferences_page.dart';
 
 class BottomBar extends StatefulWidget {
